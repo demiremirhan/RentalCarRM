@@ -1,13 +1,11 @@
-﻿using Entities.Concrete;
+﻿using Business.Absrtact;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Abstract;
-using Business.Concrete;
-using DataAccess.Concrete.EntityFramework;
 
 namespace WebAPI.Controllers
 {
@@ -15,9 +13,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CarsController : ControllerBase
     {
-        ICarService _carService;
+        ICarsService _carService;
 
-        public CarsController(ICarService carService)
+        public CarsController(ICarsService carService)
         {
             _carService = carService;
         }
@@ -25,6 +23,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
+
             var result = _carService.GetAll();
             if (result.Success)
             {
@@ -41,7 +40,6 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
@@ -52,11 +50,30 @@ namespace WebAPI.Controllers
             if (result.Success)
             {
                 return Ok(result);
-
             }
-
             return BadRequest(result);
         }
 
+        [HttpPut("update")]
+        public IActionResult Update(Car car)
+        {
+            var result = _carService.Update(car);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete(Car car)
+        {
+            var result = _carService.Delete(car);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

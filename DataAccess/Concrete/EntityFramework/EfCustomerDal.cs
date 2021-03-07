@@ -1,15 +1,19 @@
 ﻿using Core.DataAccess.EntityFramework;
+using Core.Entities;
+using DataAccess.Absrtact;
+using Entities.Concrete;
+using Entities.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
-using DataAccess.Abstract;
-using Entities.Concrete;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCustomerDal : EfEntityRepositoryBase<Customer, CarTablesContext>, ICustomerDal
+    public class EfCustomerDal : EfEntityRepositoryBase<Customer, CarsTableContext>, ICustomerDal
     {
 
     }
 }
-

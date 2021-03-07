@@ -1,22 +1,18 @@
-﻿using Business.Abstract;
-using DataAccess.Abstract;
+﻿using Business.Absrtact;
+using Business.Constant;
+using Core.Utilities.Results;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Core.Utilities.Results.Abstract;
-using Core.Utilities.Results;
-using Business.Constant;
-using Core.Utilities.Results.Concrete;
+using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
     public class BrandManager : IBrandService
     {
         IBrandDal _brandDal;
-
         public BrandManager(IBrandDal brandDal)
         {
             _brandDal = brandDal;
@@ -24,35 +20,37 @@ namespace Business.Concrete
 
         public IResult Add(Brand brand)
         {
-
             if (brand.BrandName.Length < 2)
             {
-                return new ErrorResult(Messages.CarNameInvalid);
+                return new ErrorResult(Messages.ProductNameInvalid);
             }
             _brandDal.Add(brand);
 
-            return new SuccessResult(Messages.CarAdded);
+            return new SuccessResult(Messages.ProductAdded);
 
         }
 
         public IResult Delete(Brand brand)
         {
-            _brandDal.Delete(brand);
-            return new SuccessResult(Messages.DeletedBrand);
+            try
+            {
+                _brandDal.Delete(brand);
+                return new SuccessResult(Messages.BrandDeleted);
+            }
+            catch (ArgumentNullException)
+            {
+                return new ErrorResult(Messages.BrandInvalid);
+            }
         }
 
         public IDataResult<List<Brand>> GetAll()
         {
-
             if (DateTime.Now.Hour == 22)
             {
                 return new ErrorDataResult<List<Brand>>(Messages.MaintenanceTime);
             }
-
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.CarsListed);
-
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(), Messages.ProductListed);
         }
-
 
         public IDataResult<Brand> GetById(int id)
         {
@@ -61,8 +59,7 @@ namespace Business.Concrete
 
         public IResult Update(Brand brand)
         {
-            _brandDal.Update(brand);
-            return new SuccessResult(Messages.UpdatedBrand);
+            return new SuccessResult(Messages.BrandUpdated);
         }
     }
 }

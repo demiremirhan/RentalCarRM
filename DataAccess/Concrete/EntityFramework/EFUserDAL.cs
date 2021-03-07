@@ -3,17 +3,16 @@ using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Text;
 using System.Linq;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EFUserDAL : EfEntityRepositoryBase<User, CarTablesContext>, IUserDAL
+    public class EfUserDal : EfEntityRepositoryBase<User, CarsTableContext>, IUserDal
     {
         public List<OperationClaim> GetClaims(User user)
         {
-            using (var context = new CarTablesContext())
+            using (var context = new CarsTableContext())
             {
                 var result = from operationClaim in context.OperationClaims
                              join userOperationClaim in context.UserOperationClaims
@@ -25,5 +24,4 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
     }
-
 }

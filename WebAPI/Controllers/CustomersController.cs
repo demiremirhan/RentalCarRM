@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Business.Absrtact;
+using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Abstract;
-using Entities.Concrete;
 
 namespace WebAPI.Controllers
 {
@@ -20,38 +20,15 @@ namespace WebAPI.Controllers
             _customerService = customerService;
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(Customer customer)
+        [HttpGet("getall")]
+        public IActionResult GetAll()
         {
-            var result = _customerService.Add(customer);
+
+            var result = _customerService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
             }
-
-            return BadRequest(result);
-        }
-
-        [HttpDelete("delete")]
-        public IActionResult Delete(Customer customer)
-        {
-            var result = _customerService.Delete(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPut("uptade")]
-        public IActionResult Uptade(Customer customer)
-        {
-            var result = _customerService.Update(customer);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
             return BadRequest(result);
         }
 
@@ -63,19 +40,39 @@ namespace WebAPI.Controllers
             {
                 return Ok(result);
             }
-
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
+        [HttpPost("add")]
+        public IActionResult Add(Customer customer)
         {
-            var result = _customerService.GetAll();
+            var result = _customerService.Add(customer);
             if (result.Success)
             {
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
 
+        [HttpPut("update")]
+        public IActionResult Update(Customer customer)
+        {
+            var result = _customerService.Update(customer);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult Delete(Customer customer)
+        {
+            var result = _customerService.Delete(customer);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
             return BadRequest(result);
         }
     }

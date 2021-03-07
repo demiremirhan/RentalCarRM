@@ -1,30 +1,33 @@
-﻿using System;
+﻿using Business.Absrtact;
+using Business.Constant;
+using Core.Utilities.Results;
+using DataAccess.Absrtact;
+using Entities.Concrete;
+using Entities.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Business.Abstract;
-using Entities.Concrete;
-using DataAccess.Abstract;
-using Core.Utilities.Results;
-using Core.Utilities.Results.Abstract;
-using Business.Constant;
-using Core.Utilities.Results.Concrete;
 
 namespace Business.Concrete
 {
     public class RentalManager : IRentalService
     {
-        IRentDal _rentalDal;
+        IRentalDal _rentalDal;
 
-        public RentalManager(IRentDal rentalDal)
+        public RentalManager(IRentalDal rentalDal)
         {
             _rentalDal = rentalDal;
         }
 
         public IResult Add(Rental rental)
         {
+            if (_rentalDal.Get(c => c.RentId == rental.RentId) == null)
+            {
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.RentalAdded);
+            }
 
-            _rentalDal.Add(rental);
-            return new SuccessResult(Messages.CarAdded);
+            return new ErrorResult(Messages.RentalInvalid);
         }
 
         public IResult Delete(Rental rental)
@@ -32,28 +35,32 @@ namespace Business.Concrete
             try
             {
                 _rentalDal.Delete(rental);
-                return new SuccessResult(Messages.RentDeleted);
+                return new SuccessResult(Messages.UserDeleted);
             }
             catch (ArgumentNullException)
             {
-                return new ErrorResult(Messages.RentInvalid);
+                return new ErrorResult(Messages.UserInvalid);
             }
-        }
-
-        public IResult Update(Rental rental)
-        {
-            _rentalDal.Update(rental);
-            return new SuccessResult();
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(), Messages.CustomerListed);
         }
 
-        public IDataResult<Rental> GetByRentalId(int rentalId)
+        public IResult Update(Rental rental)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(b => b.RentalId == rentalId));
+            return new SuccessResult(Messages.RentalUpdated);
+        }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailDto()
+        {
+            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetailDto());
+        }
+
+        public IDataResult<Rental> GetById(int id)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.RentId == id));
         }
     }
 }

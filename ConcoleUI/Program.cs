@@ -1,6 +1,6 @@
 ﻿using Business.Concrete;
-using Business.Constant;
 using DataAccess.Concrete.EntityFramework;
+using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
 
@@ -10,159 +10,116 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //SpecialCarTest();
+            //CarTest();
+            //JoinTest();
+            //CustomerManagerTest();
+            //AccordingToBrandName(); 
+            GetAllCarImage();
+        }
+        private static void CustomerManagerTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            var result = rentalManager.GetRentalDetailDto();
+
+            if (result.Success)
+            {
+                foreach (var customer in result.Data)
+                {
+                    Console.WriteLine("Car Id : " + customer.CustomerId + "\n" + "Car Brand: " + customer.FirstName +
+                                       "\n" + "Car Color: " + customer.LastName + "\n" + "Daily Price: " + customer.CompanyName +
+                                         "\n" + "Model Year: " + customer.Email + "\n" + "Description: " + customer.Password + "\n");
+                }
+            }
+        }
+        private static void AccordingToBrandName()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
-           
-            RentalManager rentalManager = new RentalManager(new EfRentDal());
+            //carManager.Add(new Car { CarId = 9, BrandId = 5, ColorId = 3, DailyPrice = 700, ModelYear = 2010, Description = "Full Vehicle" });
 
-            //TestCarRentalApplication(carManager); // Test Car Rental Application
-            //TestGetAllCars(carManager); //Test getting all cars in DB.
-            //TestGetCarById(carManager); //Test getting a car by ID.
-            //TestAddCar(carManager); //Test adding a car into DB.
-            //TestDeleteCar(carManager); //Test deleting a car from DB.
-            //TestUpdateCar(carManager); //Test updating a car in DB.
-            //TestGetAllBrands(brandManager); // Test getting all brands in DB.
-            //TestGetAllColors(colorManager); // Test getting all colors in DB.
-            //TestProductDetails(carManager); // Test getting all details based on predefined DTO class.
-            //TestAddCustomer(customerManager); //Test adding a customer into DB.
-            TestAddRental(rentalManager); //Test adding a rental into DB.
+            //carManager.Delete((carManager.GetById(11)).Data);
+            Console.WriteLine("List of Brands:");
+            GetAllBrand(brandManager);
+            Console.WriteLine("-------- \n Please, choose a Brand Id:");
+            int brandId = Convert.ToInt32(Console.ReadLine());
+            foreach (var cars in (carManager.GetAllByBrandId(brandId)).Data)
+            {
+                Console.WriteLine(cars.CarId + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
+            }
         }
 
-        private static void TestGetAllCars(CarManager carManager)
+        private static void JoinTest()
         {
-            var result = carManager.GetAll();
-
-            if (result.Success)
+            CarManager carManager = new CarManager(new EfCarDal());
+            var result = carManager.GetProductDetailDto();
+            if (result.Success == true)
             {
                 foreach (var car in result.Data)
                 {
-                    Console.WriteLine(car.Id + "-" + car.BrandName + "-" + car.DailyPrice + "-" + car.Description);
+
+                    Console.WriteLine("Car Id : " + car.CarId + "\n" + "Car Brand: " + car.BrandName +
+                                       "\n" + "Car Color: " + car.ColorName + "\n" + "Daily Price: " + car.DailyPrice +
+                                         "\n" + "Model Year: " + car.ModelYear + "\n" + "Description: " + car.Description + "\n");
                 }
             }
             else
             {
                 Console.WriteLine(result.Message);
             }
+
         }
 
-        private static void TestGetCarById(CarManager carManager)
+        private static void CarTest()
         {
-            var result = carManager.GetById(1);
-
-            if (result.Success)
+            for (int i = 1; i < 9; i++)
             {
-                Console.WriteLine(result.Data.Id + "-" + result.Data.BrandName + "-" + result.Data.DailyPrice + "-" + result.Data.Description);
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
-        }
+                CarManager carManager = new CarManager(new EfCarDal());
+                BrandManager brandManager = new BrandManager(new EfBrandDal());
+                ColorManager colorManager = new ColorManager(new EfColorDal());
 
-        private static void TestAddCar(CarManager carManager)
-        {
-            var result = carManager.Add(new Car { BrandId = 5, ColorId = 1, BrandName = "Renault Megane", ModelYear = "2020", DailyPrice = 150, Description = "Renault Megane, Diesel, Automatic Transmission" });
-            Console.WriteLine(result.Message);
-        }
 
-        private static void TestDeleteCar(CarManager carManager)
-        {
-            var result = carManager.Delete(new Car { Id = 1004 });
-            Console.WriteLine(result.Message);
-        }
-
-        private static void TestUpdateCar(CarManager carManager)
-        {
-            var result = carManager.Update(new Car { Id = 11, BrandId = 5, ColorId = 2, BrandName = "Renault Symbol", ModelYear = "2016", DailyPrice = 100, Description = "Renault Symbol, Diesel, Manual Transmission" });
-            Console.WriteLine(result.Message);
-        }
-
-        //private static void TestGetAllColors(ColorManager colorManager)
-        //{
-        //    var result = colorManager.GetAll();
-
-        //    foreach (var color in result.)
-        //    {
-        //        Console.WriteLine(color.ColorId + "-" + color.ColorName);
-        //    }
-        //}
-
-        private static void TestGetAllBrands(BrandManager brandManager)
-        {
-            var result = brandManager.GetAll();
-
-            foreach (var brand in result.Data)
-            {
-                Console.WriteLine(brand.BrandId + "-" + brand.BrandName);
-            }
-        }
-
-        private static void TestProductDetails(CarManager carManager)
-        {
-            var result = carManager.GetCarDetail();
-
-            if (result.Success)
-            {
-                foreach (var car in result.Data)
+                Console.WriteLine("BrandId:------ {0} ------", i);
+                foreach (var cars in (carManager.GetAllByBrandId(i)).Data)
                 {
-                    Console.WriteLine(car.BrandName + "-" + car.BrandName + "-" + car.ColorName + "-" + car.DailyPrice);
+                    Console.WriteLine(cars.CarId + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
                 }
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
+
             }
         }
-
-        public static void TestAddCustomer(CustomerManager customerManager)
+        private static void SpecialCarTest()
         {
-            var Result = customerManager.Add(new Customer { CustomerId = 1, CompanyName = "Siemens" });
-            Console.WriteLine(Result.Message);
-        }
-
-        public static void TestDeletedRental(RentalManager rentalManager)
-        {
-            var result = rentalManager.Delete(new Rental {RentalId = 1,});
-        }
-        public static void TestAddRental(RentalManager rentalManager)
-        {
-            //var Result = rentalManager.GetByRentalId(5);
-            var Result = rentalManager.Add(
-                new Rental
-                {
-                    CarId = 1, 
-                    CustomerId = 4, 
-                    RentalId = 2,
-                    
-                    RentDate = new DateTime(2021, 1, 20, 10, 30, 00), 
-                    ReturnDate = new DateTime(2021, 2, 1, 15, 00, 00)
-                });
-            Console.WriteLine(Result.Message);
-            
-        }
-
-        private static void TestCarRentalApplication(CarManager carManager)
-        {
-            Console.WriteLine("**********************************************\n" +
-                              "***** Welcome to our car rent company!   *****\n" +
-                              "***** You can view available cars below: *****\n" +
-                              "**********************************************\n");
-
-            var result = carManager.GetAll();
-
-            if (result.Success)
+            CarManager carManager = new CarManager(new EfCarDal());
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            Console.WriteLine("\nBrand Id: ");
+            int brandId = Convert.ToInt32(Console.ReadLine());
+            foreach (var cars in (carManager.GetAllByBrandId(brandId)).Data)
             {
-                for (int i = 0; i < result.Data.Count; i++)
-                {
-                    Console.WriteLine(i + 1 + ") " + result.Data[i].BrandName + ", Model Year:" + result.Data[i].ModelYear + ", Daily Price:" + result.Data[i].DailyPrice + ", Description:" + result.Data[i].Description + "\n------------------------------------------------------------------------------------------------------------");
-                }
+                Console.WriteLine(cars.CarId + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
             }
-            else
+            //brandManager.Add(new Brand { BrandName = "a" });
+            //carManager.Add(new Car { CarId = 11, BrandId = 5, ColorId = 3, DailyPrice = 700, ModelYear = 2010, Description = "Full Vehicle" });
+            //int carIdForDelete = Convert.ToInt32(Console.ReadLine());
+            carManager.Delete((carManager.GetById(11)).Data);
+        }
+        private static void GetAllBrand(BrandManager brandManager)
+        {
+            foreach (var brand in brandManager.GetAll().Data)
             {
-                Console.WriteLine(result.Message);
+                Console.WriteLine(brand.BrandId + "/" + brand.BrandName);
+            }
+        }
+        private static void GetAllCarImage()
+        {
+            CarImageManager carImageManager = new CarImageManager(new EfCarImageDal());
+            foreach (var carImage in carImageManager.GetAll().Data)
+            {
+                Console.WriteLine(carImage.Id + "/" + carImage.CarId + "/" + carImage.ImagePath);
             }
         }
     }
 }
+

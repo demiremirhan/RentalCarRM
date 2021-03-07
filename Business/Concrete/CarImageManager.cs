@@ -1,12 +1,10 @@
 ﻿using Business.Abstract;
-using Business.BusinessAspect.Autofac;
+using Business.Constant;
 using Business.ValidationRules.FluentValidation;
-using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
-using Core.Utilities.Results.Abstract;
-using Core.Utilities.Results.Concrete;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
@@ -15,38 +13,38 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Business.Constant;
-using Core.Utilities.Results;
+using DataAccess.Absrtact;
+using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
     public class CarImageManager : ICarImageService
     {
-        ICarImageDAL _carImageDAL;
+        ICarImageDal _carImageDAL;
 
-        public CarImageManager(ICarImageDAL carImageDAL)
+        public CarImageManager(ICarImageDal carImageDAL)
         {
             _carImageDAL = carImageDAL;
         }
 
-        [CacheRemoveAspect("ICarImageService.Get")]
-        [SecuredOperation("carImages.add,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile file, CarImage carImage)
         {
-            IResult result = BusinessRules.Run(CheckImageLimitExceeded(carImage.CarId));
+            IResult result = BusinessRules.Run(
+                CheckImageLimitExceeded(carImage.CarId)
+                );
+
             if (result != null)
             {
                 return result;
             }
+
             carImage.ImagePath = FileHelper.Add(file);
             carImage.Date = DateTime.Now;
             _carImageDAL.Add(carImage);
             return new SuccessResult();
         }
 
-        [CacheRemoveAspect("ICarImageService.Get")]
-        [SecuredOperation("carImages.delete,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Delete(CarImage carImage)
         {
@@ -55,8 +53,6 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [CacheRemoveAspect("ICarImageService.Get")]
-        [SecuredOperation("carImages.update,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile file, CarImage carImage)
         {
@@ -71,34 +67,30 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [CacheAspect]
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<CarImage> Get(int id)
         {
             return new SuccessDataResult<CarImage>(_carImageDAL.Get(p => p.Id == id));
         }
 
-        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDAL.GetAll());
         }
 
-        [CacheAspect]
         [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<List<CarImage>> GetImagesByCarId(int id)
         {
-            IResult result = BusinessRules.Run(CheckIfCarImageNull(id));
-
-            if (result != null)
+            var result = _carImageDAL.GetAll(c => c.CarId == id).Any();
+            if (!result)
             {
-                return new ErrorDataResult<List<CarImage>>(result.Message);
+                List<CarImage> carimage = new List<CarImage>();
+                carimage.Add(new CarImage { CarId = id, ImagePath = @"\Images\default.jpg" });
+                return new SuccessDataResult<List<CarImage>>(carimage);
             }
-
-            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(id).Data);
+            return new SuccessDataResult<List<CarImage>>(_carImageDAL.GetAll(p => p.CarId == id));
         }
 
-        //business rules
         private IResult CheckImageLimitExceeded(int carid)
         {
             var carImagecount = _carImageDAL.GetAll(p => p.CarId == carid).Count;
@@ -109,8 +101,6 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
-
-        [CacheAspect]
         private IDataResult<List<CarImage>> CheckIfCarImageNull(int id)
         {
             try
@@ -134,10 +124,6 @@ namespace Business.Concrete
         }
 
 
-        
+
     }
 }
-
-
-
-

@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Business.Abstract;
+﻿using Business.Absrtact;
 using Business.Constant;
 using Core.Utilities.Results;
-using Core.Utilities.Results.Abstract;
-using Core.Utilities.Results.Concrete;
-using DataAccess.Abstract;
+using DataAccess.Absrtact;
 using Entities.Concrete;
+using Entities.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
-        ICustomerService _customerService;
-
         ICustomerDal _customerDal;
 
         public CustomerManager(ICustomerDal customerDal)
@@ -40,7 +37,7 @@ namespace Business.Concrete
                 _customerDal.Delete(customer);
                 return new SuccessResult(Messages.CustomerDeleted);
             }
-            catch
+            catch (ArgumentNullException)
             {
                 return new ErrorResult(Messages.CustomerInvalid);
             }
@@ -53,12 +50,16 @@ namespace Business.Concrete
 
         public IDataResult<Customer> GetByCustomerId(int id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(p => p.CustomerId == id));
+            return new SuccessDataResult<Customer>(_customerDal.Get(p => p.CustomerId == id)); 
         }
 
         public IResult Update(Customer customer)
         {
             return new SuccessResult(Messages.CustomerUpdated);
         }
+        //public IDataResult<List<CustomerDetailDto>> GetCustomerDetailDto()
+        //{
+        //    return new SuccessDataResult<List<CustomerDetailDto>>(_customerDal.GetCustomerDetailDto());
+        //}
     }
 }

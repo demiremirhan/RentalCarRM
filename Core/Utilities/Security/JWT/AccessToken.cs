@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Utilities.Security.Jwt
+namespace Core.Utilities.Security.JWT
 {
-    public class AccessToken
+    public class AccessToken  //erişim anahtarı
     {
-        public string Token { get; set; }
-        public DateTime Expiration { get; set; }
-
+        public string Token { get; set; } //json web tokenımız
+        public DateTime Expiration { get; set; } //bitiş tarihi
     }
 }

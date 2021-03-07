@@ -1,7 +1,9 @@
 ﻿using Core.DataAccess.EntityFramework;
-using DataAccess.Abstract;
+using Core.Entities;
+using DataAccess.Absrtact;
 using Entities.Concrete;
 using Entities.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,25 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, CarTablesContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, CarsTableContext>, ICarDal
     {
-        public List<CarDetailDto> GetCarDetailDtos(Expression<Func<Car, bool>> filter = null)
+        public List<ProductDetailDto> GetProductDetailDto()
         {
-            using (CarTablesContext context = new CarTablesContext())
+            using (CarsTableContext context = new CarsTableContext())
             {
-                var result = from c in filter is null ? context.CarsOld : context.CarsOld.Where(filter)
-                             join b in context.Brands
-                             on c.BrandId equals b.BrandId
-                             join co in context.Colors
-                             on c.ColorId equals co.ColorId
-                             select new CarDetailDto
+                var result = from car in context.Cars
+                             join brand in context.Brands
+                             on car.CarId equals brand.BrandId
+                             join color in context.Colors
+                             on car.ColorId equals color.ColorId
+                             select new ProductDetailDto
                              {
-                                 Id = c.Id,
-                                 BrandId = b.BrandId,
-                                 ColorId = co.ColorId,
-                                 BrandName = b.BrandName,
-                                 ColorName = co.ColorName,
-                                 DailyPrice = c.DailyPrice,
-                                 ModelYear = c.ModelYear,
-                                 Description = c.Description
-
+                                 CarId = car.CarId,
+                                 BrandName = brand.BrandName,
+                                 ColorName = color.ColorName,
+                                 DailyPrice = car.DailyPrice,
+                                 ModelYear = car.ModelYear,
+                                 Description = car.Description
                              };
                 return result.ToList();
             }

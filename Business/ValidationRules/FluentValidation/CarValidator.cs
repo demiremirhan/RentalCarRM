@@ -1,25 +1,26 @@
-﻿using System;
+﻿using Entities.Concrete;
+using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Entities.Concrete;
-using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class CarValidator : AbstractValidator<Car>
+    public class CarValidator:AbstractValidator<Car>
     {
         public CarValidator()
         {
-            RuleFor(p => p.BrandName).MinimumLength(2);
-            RuleFor(p => p.BrandName).NotEmpty();
-            RuleFor(p => p.DailyPrice).GreaterThan(10);
-            //RuleFor(p => p.BrandName).Must(StartWitA);
-
+            RuleFor(c => c.CarId).NotEmpty();
+            //RuleFor(p => p.ProductName).MinimumLength(2);
+            RuleFor(c => c.DailyPrice).NotEmpty();
+            RuleFor(c => c.DailyPrice).GreaterThan(0);
+            RuleFor(c => c.DailyPrice).GreaterThanOrEqualTo(10).When(c => c.CarId == 1);
+            //RuleFor(c => c.ProductName).Must(StartWithA).WithMessage("Ürünler A harfi ile başlamalı");  //ürün isimleri a ile başlamalı generate method
         }
 
-        //private bool StartWitA(string arg)
-        //{
-        //    return arg.StartsWith("A");
-        //}
+        private bool StartWithA(string arg)
+        {
+            return arg.StartsWith("A"); //A ile başlıyorsa true dönüyor.
+        }
     }
 }

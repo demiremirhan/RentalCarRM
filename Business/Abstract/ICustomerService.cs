@@ -1,11 +1,11 @@
 ﻿using Core.Utilities.Results;
-using Core.Utilities.Results.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Business.Abstract
+namespace Business.Absrtact
 {
     public interface ICustomerService
     {

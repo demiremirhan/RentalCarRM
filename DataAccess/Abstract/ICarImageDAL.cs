@@ -4,10 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccess.Abstract
+namespace DataAccess.Absrtact
 {
-    public interface ICarImageDAL : IEntityRepository<CarImage>
+    public interface ICarImageDal : IEntityRepository<CarImage>
     {
-
     }
 }

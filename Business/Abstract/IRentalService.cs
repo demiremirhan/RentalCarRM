@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Core.Utilities.Results;
-using Core.Utilities.Results.Abstract;
+﻿using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Business.Abstract
+namespace Business.Absrtact
 {
     public interface IRentalService
     {
         IDataResult<List<Rental>> GetAll();
-        IDataResult<Rental> GetByRentalId(int rentalId);
+        IDataResult<Rental> GetById(int id);
         IResult Add(Rental rental);
-        IResult Update(Rental rental);
         IResult Delete(Rental rental);
+        IResult Update(Rental rental);
+        IDataResult<List<RentalDetailDto>> GetRentalDetailDto();
     }
 }

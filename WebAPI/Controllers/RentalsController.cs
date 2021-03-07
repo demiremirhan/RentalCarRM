@@ -1,28 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Business.Absrtact;
+using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Business.Abstract;
-using Entities.Concrete;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RentalsController : Controller
+    public class RentalsController : ControllerBase
     {
-        IRentalService _rentalService ;
+        IRentalService _rentalService;
 
         public RentalsController(IRentalService rentalService)
         {
             _rentalService = rentalService;
         }
 
-        [HttpPost("add")]
-        public IActionResult Add(Rental rental)
+        [HttpGet("getall")]
+        public IActionResult GetAll()
         {
-            var result = _rentalService.Add(rental);
+
+            var result = _rentalService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
@@ -30,10 +32,21 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpDelete("delete")]
-        public IActionResult Delete(Rental rental)
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
         {
-            var result = _rentalService.Delete(rental);
+            var result = _rentalService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("add")]
+        public IActionResult Add(Rental rental)
+        {
+            var result = _rentalService.Add(rental);
             if (result.Success)
             {
                 return Ok(result);
@@ -52,21 +65,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int id)
+        [HttpDelete("delete")]
+        public IActionResult Delete(Rental rental)
         {
-            var result = _rentalService.GetByRentalId(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getall")]
-        public IActionResult GetAll()
-        {
-            var result = _rentalService.GetAll();
+            var result = _rentalService.Delete(rental);
             if (result.Success)
             {
                 return Ok(result);

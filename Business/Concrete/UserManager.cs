@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constant;
 using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using System;
@@ -9,27 +10,26 @@ namespace Business.Concrete
 {
     public class UserManager : IUserService
     {
-        IUserDAL _userDAL;
+        IUserDal _userDal;
 
-        public UserManager(IUserDAL userDAL)
+        public UserManager(IUserDal userDal)
         {
-            _userDAL = userDAL;
+            _userDal = userDal;
         }
 
         public List<OperationClaim> GetClaims(User user)
         {
-            return _userDAL.GetClaims(user);
+            return _userDal.GetClaims(user);
         }
 
         public void Add(User user)
         {
-            _userDAL.Add(user);
+            _userDal.Add(user);
         }
 
         public User GetByMail(string email)
         {
-            return _userDAL.Get(u => u.Email == email);
+            return _userDal.Get(u => u.Email == email);
         }
     }
 }
-

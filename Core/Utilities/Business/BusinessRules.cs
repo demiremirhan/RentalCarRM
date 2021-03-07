@@ -2,22 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Core.Utilities.Results.Abstract;
 
 namespace Core.Utilities.Business
 {
     public class BusinessRules
     {
-        public static IResult Run(params IResult[] logics)
+        public static IResult Run(params IResult[] logics) //params=> birden çok parametre, virgül kullanarak, kullanabiliriz demektir. logics=> iş kuralı demektir
         {
-            foreach (var result in logics)
+            foreach (var logic in logics)
             {
-                if (!result.Success)
+                if (logic.Success) //başarısız olana bakıyoruz.
                 {
-                    return result;
+                    return logic;
                 }
             }
-
             return null;
         }
     }
