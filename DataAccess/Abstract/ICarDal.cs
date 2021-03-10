@@ -10,6 +10,6 @@ namespace DataAccess.Absrtact
 {
     public interface ICarDal:IEntityRepository<Car>
     {
-        List<ProductDetailDto> GetProductDetailDto();
+        List<CarDetailDto> GetProductDetailDto();
     }
 }

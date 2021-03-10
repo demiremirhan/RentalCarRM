@@ -14,7 +14,7 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, CarsTableContext>, ICarDal
     {
-        public List<ProductDetailDto> GetProductDetailDto()
+        public List<CarDetailDto> GetProductDetailDto()
         {
             using (CarsTableContext context = new CarsTableContext())
             {
@@ -23,7 +23,7 @@ namespace DataAccess.Concrete.EntityFramework
                              on car.CarId equals brand.BrandId
                              join color in context.Colors
                              on car.ColorId equals color.ColorId
-                             select new ProductDetailDto
+                             select new CarDetailDto
                              {
                                  CarId = car.CarId,
                                  BrandName = brand.BrandName,
