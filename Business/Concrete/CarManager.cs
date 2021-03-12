@@ -29,14 +29,9 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            IResult result = BusinessRules.Run(CheckIfCarOfCategoryCorrect(car.CarId));
-
-            if (result != null)
-            {
-                return result;
-            }
             _carDal.Add(car);
             return new SuccessResult(Messages.BrandAdded);
+
         }
 
         public IResult Delete(Car car)
