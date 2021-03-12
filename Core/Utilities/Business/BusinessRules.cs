@@ -11,7 +11,7 @@ namespace Core.Utilities.Business
         {
             foreach (var logic in logics)
             {
-                if (logic.Success) //başarısız olana bakıyoruz.
+                if (!logic.Success) //başarısız olana bakıyoruz.
                 {
                     return logic;
                 }
