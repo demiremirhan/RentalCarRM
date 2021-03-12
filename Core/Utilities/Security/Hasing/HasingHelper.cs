@@ -13,15 +13,10 @@ namespace Core.Utilities.Security.Hashing
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
             }
         }
-
         public static bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            if (password == null) throw new ArgumentNullException(nameof(password));
-            if (passwordHash == null) throw new ArgumentNullException(nameof(passwordHash));
-            if (passwordSalt == null) throw new ArgumentNullException(nameof(passwordSalt));
             using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
@@ -32,8 +27,8 @@ namespace Core.Utilities.Security.Hashing
                         return false;
                     }
                 }
-                return true;
             }
+            return true;
         }
     }
 }
