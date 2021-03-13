@@ -43,8 +43,6 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
-      
-            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>(); //eklendi
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();  //çalışan uygulama içinde aspecti çağırma işlemi yapıyor
 

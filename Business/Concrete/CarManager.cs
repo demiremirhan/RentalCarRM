@@ -13,6 +13,11 @@ using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Transactions;
+using Business.BusinessAspect.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Performance;
+using Core.Aspects.Autofac.Transaction;
 using DataAccess.Absrtact;
 
 
@@ -26,14 +31,17 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
+        [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
             _carDal.Add(car);
             return new SuccessResult(Messages.BrandAdded);
 
         }
-
+        [SecuredOperation("car.add,admin")]
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Delete(Car car)
         {
             try
@@ -47,6 +55,7 @@ namespace Business.Concrete
             }
         }
 
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             //if (DateTime.Now.Hour == 22)
@@ -61,9 +70,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == id));  //eşit olan id leri filtrele demek
         }
 
+        [CacheAspect]
+        [PerformanceAspect(5)]
         public IDataResult<Car> GetById(int carId)
         {
-            return new SuccessDataResult<Car> (_carDal.Get(c => c.CarId == carId));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId));
         }
         public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
         {
@@ -75,7 +86,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetProductDetailDto());
         }
-
+        [ValidationAspect((typeof(CarValidator)))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             if (car.DailyPrice > 0)
@@ -103,6 +115,17 @@ namespace Business.Concrete
 
             }
             return new SuccessResult();
+        }
+        [TransactionScopeAspect]
+        public IResult AddTransactional(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice > 200)
+            {
+                throw new Exception("");
+            }
+            Add(car);
+            return null;
         }
     }
 }
