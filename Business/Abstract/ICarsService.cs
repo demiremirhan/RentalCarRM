@@ -11,6 +11,7 @@ namespace Business.Absrtact
     {
         IDataResult<List<Car>> GetAll();
         IDataResult<List<Car>> GetAllByBrandId(int id);
+        IDataResult<List<Car>> GetAllByColorId(int id);
         IDataResult<Car> GetModelYear(int year);
         IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max);
         IDataResult<Car> GetById(int id);
@@ -19,6 +20,5 @@ namespace Business.Absrtact
         IResult Update(Car car);
         IDataResult<List<CarDetailDto>> GetProductDetailDto();
         IResult AddTransactional(Car car);
-
     }
 }

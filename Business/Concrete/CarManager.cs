@@ -40,8 +40,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BrandAdded);
 
         }
-        [SecuredOperation("car.add,admin")]
-        [ValidationAspect(typeof(CarValidator))]
+      
         public IResult Delete(Car car)
         {
             try
@@ -70,6 +69,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == id));  //eşit olan id leri filtrele demek
         }
 
+        public IDataResult<List<Car>> GetAllByColorId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == id));  //eşit olan id leri filtrele demek
+        }
         [CacheAspect]
         [PerformanceAspect(5)]
         public IDataResult<Car> GetById(int carId)
@@ -105,8 +108,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.ModelYear == year));
         }
-
-        private IResult CheckIfCarOfCategoryCorrect(int carId)
+        
+      private IResult CheckIfCarOfCategoryCorrect(int carId)
         {
             var result = _carDal.GetAll(p => p.CarId == carId).Count;
             if (result >= 10)
@@ -127,5 +130,8 @@ namespace Business.Concrete
             Add(car);
             return null;
         }
+        
+
+    
     }
 }
