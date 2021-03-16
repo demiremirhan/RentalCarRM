@@ -47,7 +47,7 @@ namespace ConsoleUI
             int brandId = Convert.ToInt32(Console.ReadLine());
             foreach (var cars in (carManager.GetAllByBrandId(brandId)).Data)
             {
-                Console.WriteLine(cars.CarId + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
+                Console.WriteLine(cars.Id + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
             }
         }
 
@@ -60,7 +60,7 @@ namespace ConsoleUI
                 foreach (var car in result.Data)
                 {
 
-                    Console.WriteLine("Car Id : " + car.CarId + "\n" + "Car Brand: " + car.BrandName +
+                    Console.WriteLine("Car Id : " + car.Id + "\n" + "Car Brand: " + car.BrandName +
                                        "\n" + "Car Color: " + car.ColorName + "\n" + "Daily Price: " + car.DailyPrice +
                                          "\n" + "Model Year: " + car.ModelYear + "\n" + "Description: " + car.Description + "\n");
                 }
@@ -84,7 +84,7 @@ namespace ConsoleUI
                 Console.WriteLine("BrandId:------ {0} ------", i);
                 foreach (var cars in (carManager.GetAllByBrandId(i)).Data)
                 {
-                    Console.WriteLine(cars.CarId + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
+                    Console.WriteLine(cars.Id + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
                 }
 
             }
@@ -98,7 +98,7 @@ namespace ConsoleUI
             int brandId = Convert.ToInt32(Console.ReadLine());
             foreach (var cars in (carManager.GetAllByBrandId(brandId)).Data)
             {
-                Console.WriteLine(cars.CarId + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
+                Console.WriteLine(cars.Id + " \\ " + brandManager.GetById(cars.BrandId).Data.BrandName + " \\ " + colorManager.GetByColorId(cars.ColorId).Data.ColorName + " \\ " + cars.ColorId + " \\ " + cars.ModelYear + " \\ " + cars.Description + "\n");
             }
             //brandManager.Add(new Brand { BrandName = "a" });
             //carManager.Add(new Car { CarId = 11, BrandId = 5, ColorId = 3, DailyPrice = 700, ModelYear = 2010, Description = "Full Vehicle" });

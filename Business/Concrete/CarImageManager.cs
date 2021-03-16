@@ -79,7 +79,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
-        public IDataResult<List<CarImage>> GetImagesByCarId(int id)
+        public IDataResult<List<CarImage>> GetImagesById(int id)
         {
             var result = _carImageDAL.GetAll(c => c.CarId == id).Any();
             if (!result)

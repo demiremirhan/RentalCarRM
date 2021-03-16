@@ -10,11 +10,11 @@ namespace Business.ValidationRules.FluentValidation
     {
         public CarValidator()
         {
-            RuleFor(c => c.CarId).NotEmpty();
+            RuleFor(c => c.Id).NotEmpty();
             //RuleFor(p => p.ProductName).MinimumLength(2);
             RuleFor(c => c.DailyPrice).NotEmpty();
             RuleFor(c => c.DailyPrice).GreaterThan(0);
-            RuleFor(c => c.DailyPrice).GreaterThanOrEqualTo(10).When(c => c.CarId == 1);
+            RuleFor(c => c.DailyPrice).GreaterThanOrEqualTo(10).When(c => c.Id == 1);
             //RuleFor(c => c.ProductName).Must(StartWithA).WithMessage("Ürünler A harfi ile başlamalı");  //ürün isimleri a ile başlamalı generate method
         }
 

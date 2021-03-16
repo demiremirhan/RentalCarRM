@@ -77,7 +77,7 @@ namespace Business.Concrete
         [PerformanceAspect(5)]
         public IDataResult<Car> GetById(int carId)
         {
-            return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == carId));
         }
         public IDataResult<List<Car>> GetByDailyPrice(decimal min, decimal max)
         {
@@ -111,7 +111,7 @@ namespace Business.Concrete
         
       private IResult CheckIfCarOfCategoryCorrect(int carId)
         {
-            var result = _carDal.GetAll(p => p.CarId == carId).Count;
+            var result = _carDal.GetAll(p => p.Id == carId).Count;
             if (result >= 10)
             {
                 return new ErrorResult(Messages.CarCountOfCategoryError);
