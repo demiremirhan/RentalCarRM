@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataAccess.Absrtact
+namespace DataAccess.Abstract
 {
     public interface ICarDal:IEntityRepository<Car>
     {
-        List<CarDetailDto> GetProductDetailDto();
+        List<CarDetailDto> GetCarDetailDto();
     }
 }

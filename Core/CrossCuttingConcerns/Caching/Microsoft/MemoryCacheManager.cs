@@ -11,7 +11,8 @@ namespace Core.CrossCuttingConcerns.Caching.Microsoft
 {
     public class MemoryCacheManager : ICacheManager
     {
-        //adapterPattern uygulamasındayız bir varolan sistemş kendi sistemimize göre uyarladııgımız için bu şekilde implemente yapıldı
+        //adapterPattern uygulamasındayız bir varolan sistemş
+        //kendi sistemimize göre uyarladııgımız için bu şekilde implemente yapıldı
         IMemoryCache _memoryCache;
 
         public MemoryCacheManager()

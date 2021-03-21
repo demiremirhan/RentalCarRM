@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using DataAccess.Abstract;
 
 namespace DataAccess.Concrete.InMemory
 {
@@ -66,7 +67,7 @@ namespace DataAccess.Concrete.InMemory
             throw new NotImplementedException();
         }
 
-        public List<CarDetailDto> GetProductDetailDto()
+        public List<CarDetailDto> GetCarDetailDto()
         {
             throw new NotImplementedException();
         }

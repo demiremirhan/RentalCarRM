@@ -9,12 +9,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using DataAccess.Abstract;
 
 namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCarDal : EfEntityRepositoryBase<Car, CarsTableContext>, ICarDal
     {
-        public List<CarDetailDto> GetProductDetailDto()
+        public List<CarDetailDto> GetCarDetailDto()
         {
             using (CarsTableContext context = new CarsTableContext())
             {

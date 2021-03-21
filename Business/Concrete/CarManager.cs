@@ -87,7 +87,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetProductDetailDto()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetProductDetailDto());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailDto());
         }
         [ValidationAspect((typeof(CarValidator)))]
         [CacheRemoveAspect("ICarService.Get")]
