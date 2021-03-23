@@ -10,12 +10,32 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+
+            CarManager carManager = new CarManager(new EfCarDal());
+            var result = carManager.GetCarDetailDto();
+
+            if (result.Success == true)
+            {
+                foreach (var car in result.Data)
+                {
+
+                    Console.WriteLine("Car Id : " + car.Id + "\n" + "Car Brand: " + car.BrandName +
+                                      "\n" + "Car Color: " + car.ColorName + "\n" + "Daily Price: " + car.DailyPrice +
+                                      "\n" + "Model Year: " + car.ModelYear + "\n" + "Description: " + car.Description + "\n"
+                                      + car.ImagePath + "\n");
+                }
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+
             //SpecialCarTest();
             //CarTest();
             //JoinTest();
             //CustomerManagerTest();
             //AccordingToBrandName(); 
-            GetAllCarImage();
+            // GetAllCarImage();
         }
         private static void CustomerManagerTest()
         {
@@ -54,7 +74,7 @@ namespace ConsoleUI
         private static void JoinTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            var result = carManager.GetProductDetailDto();
+            var result = carManager.GetCarDetailDto();
             if (result.Success == true)
             {
                 foreach (var car in result.Data)
