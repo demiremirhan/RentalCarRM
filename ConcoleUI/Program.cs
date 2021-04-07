@@ -10,11 +10,9 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-
             CarManager carManager = new CarManager(new EfCarDal());
             var result = carManager.GetCarDetailDto();
-
-            if (result.Success == true)
+            if (result.Success)
             {
                 foreach (var car in result.Data)
                 {
@@ -24,11 +22,30 @@ namespace ConsoleUI
                                       "\n" + "Model Year: " + car.ModelYear + "\n" + "Description: " + car.Description + "\n"
                                       + car.ImagePath + "\n");
                 }
-            }
-            else
+            } else
             {
                 Console.WriteLine(result.Message);
             }
+
+
+            //CarManager carManager = new CarManager(new EfCarDal());
+            //var result = carManager.GetCarDetailDto();
+
+            //if (result.Success == true)
+            //{
+            //    foreach (var car in result.Data)
+            //    {
+
+            //        Console.WriteLine("Car Id : " + car.Id + "\n" + "Car Brand: " + car.BrandName +
+            //                          "\n" + "Car Color: " + car.ColorName + "\n" + "Daily Price: " + car.DailyPrice +
+            //                          "\n" + "Model Year: " + car.ModelYear + "\n" + "Description: " + car.Description + "\n"
+            //                          + car.ImagePath + "\n");
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
 
             //SpecialCarTest();
             //CarTest();
@@ -39,19 +56,19 @@ namespace ConsoleUI
         }
         private static void CustomerManagerTest()
         {
-            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            //RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-            var result = rentalManager.GetRentalDetailDto();
+            //var result = rentalManager.GetRentalDetailDto();
 
-            if (result.Success)
-            {
-                foreach (var customer in result.Data)
-                {
-                    Console.WriteLine("Car Id : " + customer.CustomerId + "\n" + "Car Brand: " + customer.FirstName +
-                                       "\n" + "Car Color: " + customer.LastName + "\n" + "Daily Price: " + customer.CompanyName +
-                                         "\n" + "Model Year: " + customer.Email + "\n" + "Description: " + customer.Password + "\n");
-                }
-            }
+            //if (result.Success)
+            //{
+            //    foreach (var customer in result.Data)
+            //    {
+            //        Console.WriteLine("Car Id : " + customer.CustomerId + "\n" + "Car Brand: " + customer.FirstName +
+            //                           "\n" + "Car Color: " + customer.LastName + "\n" + "Daily Price: " + customer.CompanyName +
+            //                             "\n" + "Model Year: " + customer.Email + "\n" + "Description: " + customer.Password + "\n");
+            //    }
+            //}
         }
         private static void AccordingToBrandName()
         {

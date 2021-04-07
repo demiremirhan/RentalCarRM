@@ -21,7 +21,7 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            if (_rentalDal.Get(c => c.RentId == rental.RentId) == null)
+            if (_rentalDal.Get(c => c.Id == rental.Id) == null)
             {
                 _rentalDal.Add(rental);
                 return new SuccessResult(Messages.RentalAdded);
@@ -60,7 +60,7 @@ namespace Business.Concrete
 
         public IDataResult<Rental> GetById(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.RentId == id));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.Id == id));
         }
     }
 }

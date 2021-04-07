@@ -40,7 +40,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.BrandAdded);
 
         }
-      
+
         public IResult Delete(Car car)
         {
             try
@@ -87,7 +87,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetailDto()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailDto());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetails());
         }
         [ValidationAspect((typeof(CarValidator)))]
         [CacheRemoveAspect("ICarService.Get")]
@@ -108,8 +108,8 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.ModelYear == year));
         }
-        
-      private IResult CheckIfCarOfCategoryCorrect(int carId)
+
+        private IResult CheckIfCarOfCategoryCorrect(int carId)
         {
             var result = _carDal.GetAll(p => p.Id == carId).Count;
             if (result >= 10)
@@ -130,8 +130,28 @@ namespace Business.Concrete
             Add(car);
             return null;
         }
-        
 
-    
+        public IDataResult<CarDetailDto> GetCarDetails(int carId)
+        {
+            return new SuccessDataResult<CarDetailDto>(_carDal.GetCarDetails(carId));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandAndColor(int brandId, int colorId)
+        {
+            List<CarDetailDto> car = (_carDal.GetCarsDetails(c => c.BrandId == brandId && c.ColorId == colorId));
+
+            if (car == null)
+            {
+                return new ErrorDataResult<List<CarDetailDto>>("no clip");
+            }
+
+            return new SuccessDataResult<List<CarDetailDto>>(car);
+        }
+        public IDataResult<List<CarDetailDto>> GetCarsWithDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarsDetails());
+        }
     }
+
 }
+
